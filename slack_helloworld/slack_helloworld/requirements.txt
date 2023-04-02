@@ -1,7 +1,4 @@
-fastapi~=0.93.0
-mangum
-uvicorn
-httpx
 python-json-logger
 pydantic~=1.10.5
-datadog-lambda
+slack-bolt
+slack-sdk
