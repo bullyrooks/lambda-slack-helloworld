@@ -48,11 +48,10 @@ class SlackHelloworldStack(Stack):
                                                         description="Provides Slack Access",
                                                         handler=slack_lambda,
                                                         proxy=False,
-                                                        deploy_options=apigateway.StageOptions(stage_name="prod"),
                                                         )
 
         # Add a POST method for the Slack bot
         slack_resource = slack_helloworld_api.root.add_resource("slack")
 
-        slack_wildcard_resource = slack_resource.add_resource("{proxy+}")
-        slack_wildcard_resource.add_method("POST")
+        # slack_wildcard_resource = slack_resource.add_resource("{proxy+}")
+        slack_resource.add_method("POST")
