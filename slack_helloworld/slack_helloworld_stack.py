@@ -24,15 +24,15 @@ class SlackHelloworldStack(Stack):
         )
         self.prediction_lambda = _lambda.DockerImageFunction(
             scope=self,
-            id="slack-hellworld",
+            id="slack-helloworld",
             # Function name on AWS
-            function_name="slack-hellworld",
+            function_name="slack-helloworld",
             # Use aws_cdk.aws_lambda.DockerImageCode.from_image_asset to build
             # a docker image on deployment
             code=self.ecr_image,
         )
 
-        slack_helloworld_api = apigateway.RestApi(self, "slack-hellworld-api",
+        slack_helloworld_api = apigateway.RestApi(self, "slack-helloworld-api",
                                  rest_api_name="Slack Helloworld Service",
                                  description="Provides Slack Access")
 
@@ -40,4 +40,4 @@ class SlackHelloworldStack(Stack):
             self.prediction_lambda,
             request_templates={"application/json": '{ "statusCode": "200" }'})
 
-        slack_helloworld_api.root.add_method("GET", slack_helloworld_integration)
+        slack_helloworld_api.root.add_method("POST", slack_helloworld_integration)
