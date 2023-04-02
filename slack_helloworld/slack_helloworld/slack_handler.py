@@ -17,8 +17,18 @@ bottokenresponse = ssm.get_parameter(
 )
 bot_token = bottokenresponse["Parameter"]["Value"]
 
+signingsecretresponse = ssm.get_parameter(
+    Name='/prod/chatai/slack.signing.secret',
+    WithDecryption=True
+)
+signing_secret = signingsecretresponse["Parameter"]["Value"]
+
+
 # process_before_response must be True when running on FaaS
-app = App(process_before_response=True, token=bot_token, logger=logger)
+app = App(process_before_response=True,
+          token=bot_token,
+          logger=logger,
+          signing_secret=signing_secret)
 
 @app.command("/hello")
 def respond_to_slack_within_3_seconds(ack):
