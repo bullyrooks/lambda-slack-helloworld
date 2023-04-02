@@ -18,7 +18,7 @@ class SlackHelloworldStack(Stack):
 
     def build_lambda_func(self):
         image_tag = os.getenv("IMAGE_TAG", "latest")
-        ecr_image = _lambda.DockerImageCode.from_ecr(
+        self.ecr_image = _lambda.DockerImageCode.from_ecr(
             repository=Repository.from_repository_name(self, "slack-helloworld-repo", "slack-helloworld"),
             tag_or_digest=image_tag
         )
