@@ -37,6 +37,7 @@ class SlackHelloworldStack(Stack):
             resources=["arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/lambda.api.key",
                        "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.app.token",
                        "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.bot.token",
+                       "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.signing.secret",
                        ],
             effect=iam.Effect.ALLOW
         )
