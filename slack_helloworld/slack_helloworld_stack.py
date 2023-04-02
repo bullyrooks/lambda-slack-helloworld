@@ -4,8 +4,11 @@ from aws_cdk import (
     # Duration,
     Stack,
     aws_lambda as _lambda,
-    aws_apigateway as apigateway, )
+    aws_apigateway as apigateway,
+    aws_iam as iam,
+)
 from aws_cdk.aws_ecr import Repository
+
 from constructs import Construct
 
 
@@ -19,7 +22,7 @@ class SlackHelloworldStack(Stack):
             repository=Repository.from_repository_name(self, "slack-helloworld-repo", "slack-helloworld"),
             tag_or_digest=image_tag
         )
-        prediction_lambda = _lambda.DockerImageFunction(
+        slack_lambda = _lambda.DockerImageFunction(
             scope=self,
             id="slack-helloworld-lambda",
             # Function name on AWS
@@ -29,10 +32,20 @@ class SlackHelloworldStack(Stack):
             code=ecr_image,
         )
 
+        ssm_policy_statement = iam.PolicyStatement(
+            actions=["ssm:GetParameter"],
+            resources=["arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/lambda.api.key",
+                       "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.app.token",
+                       "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.bot.token",
+                       ],
+            effect=iam.Effect.ALLOW
+        )
+        slack_lambda.role.add_to_policy(ssm_policy_statement)
+
         slack_helloworld_api = apigateway.LambdaRestApi(self, "slack-helloworld-api",
                                                         rest_api_name="Slack Helloworld Service",
                                                         description="Provides Slack Access",
-                                                        handler=prediction_lambda,
+                                                        handler=slack_lambda,
                                                         proxy=False)
 
         # Add a POST method for the Slack bot
