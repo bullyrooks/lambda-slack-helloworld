@@ -1,10 +1,10 @@
+import os
+
 from aws_cdk import (
     # Duration,
     Stack,
     aws_lambda as _lambda,
-    aws_apigateway as apigateway, CfnParameter,
-)
-import os
+    aws_apigateway as apigateway, )
 from aws_cdk.aws_ecr import Repository
 from constructs import Construct
 
@@ -18,11 +18,11 @@ class SlackHelloworldStack(Stack):
 
     def build_lambda_func(self):
         image_tag = os.getenv("IMAGE_TAG", "latest")
-        self.ecr_image = _lambda.DockerImageCode.from_ecr(
+        ecr_image = _lambda.DockerImageCode.from_ecr(
             repository=Repository.from_repository_name(self, "slack-helloworld-repo", "slack-helloworld"),
             tag_or_digest=image_tag
         )
-        self.prediction_lambda = _lambda.DockerImageFunction(
+        prediction_lambda = _lambda.DockerImageFunction(
             scope=self,
             id="slack-helloworld-lambda",
             # Function name on AWS
@@ -32,12 +32,12 @@ class SlackHelloworldStack(Stack):
             code=self.ecr_image,
         )
 
-        slack_helloworld_api = apigateway.RestApi(self, "slack-helloworld-api",
-                                 rest_api_name="Slack Helloworld Service",
-                                 description="Provides Slack Access")
+        slack_helloworld_api = apigateway.LambdaRestApi(self, "slack-helloworld-api",
+                                                        rest_api_name="Slack Helloworld Service",
+                                                        description="Provides Slack Access",
+                                                        handler=prediction_lambda,
+                                                        proxy=False)
 
-        slack_helloworld_integration = apigateway.LambdaIntegration(
-            self.prediction_lambda,
-            request_templates={"application/json": '{ "statusCode": "200" }'})
-
-        slack_helloworld_api.root.add_method("POST", slack_helloworld_integration)
+        # Add a POST method for the Slack bot
+        slack_resource = slack_helloworld_api.root.add_resource("slack")
+        slack_resource.add_method("POST")
