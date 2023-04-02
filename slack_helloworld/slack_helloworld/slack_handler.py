@@ -30,8 +30,6 @@ apikeyresponse = ssm.get_parameter(
 )
 api_key = apikeyresponse["Parameter"]["Value"]
 
-lambda_client = boto3.client('helloWorld-cdk', region_name=os.environ["AWS_REGION"])
-
 # process_before_response must be True when running on FaaS
 app = App(process_before_response=True,
           token=bot_token,
