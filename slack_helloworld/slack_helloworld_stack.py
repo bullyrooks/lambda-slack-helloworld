@@ -19,12 +19,12 @@ class SlackHelloworldStack(Stack):
     def build_lambda_func(self):
         image_tag = os.getenv("IMAGE_TAG", "latest")
         self.ecr_image = _lambda.DockerImageCode.from_ecr(
-            repository=Repository.from_repository_name(self, "slack-helloworld", "slack-helloworld"),
+            repository=Repository.from_repository_name(self, "slack-helloworld-repo", "slack-helloworld"),
             tag_or_digest=image_tag
         )
         self.prediction_lambda = _lambda.DockerImageFunction(
             scope=self,
-            id="slack-helloworld",
+            id="slack-helloworld-lambda",
             # Function name on AWS
             function_name="slack-helloworld",
             # Use aws_cdk.aws_lambda.DockerImageCode.from_image_asset to build
