@@ -36,6 +36,11 @@ app = App(process_before_response=True,
           logger=logger,
           signing_secret=signing_secret)
 
+@app.event("app_mention")
+def handle_app_mentions(body, say, logger):
+    logger.info(body)
+    say("What's up?")
+
 @app.command("/hello")
 def respond_to_slack_within_3_seconds(ack, respond, command):
     logger.info("inside hello command")
