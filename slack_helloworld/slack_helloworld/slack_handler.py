@@ -20,15 +20,12 @@ bot_token = bottokenresponse["Parameter"]["Value"]
 # process_before_response must be True when running on FaaS
 app = App(process_before_response=True, token=bot_token, logger=logger)
 
-@app.event("app_mention")
-def handle_app_mentions(body, say, logger):
-    logger.info(body)
-    say("What's up?")
-
 @app.command("/hello")
 def respond_to_slack_within_3_seconds(ack):
+    logger.info("inside hello command")
     ack("Hi!")
 
 def handler(event, context):
+    logger.info("handling inbound event: %s", event)
     slack_handler = SlackRequestHandler(app=app)
     return slack_handler.handle(event, context)
