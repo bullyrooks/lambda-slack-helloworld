@@ -2,3 +2,5 @@ python-json-logger
 pydantic~=1.10.5
 slack-bolt
 slack-sdk
+requests
+requests
