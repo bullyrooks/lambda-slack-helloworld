@@ -51,4 +51,6 @@ class SlackHelloworldStack(Stack):
 
         # Add a POST method for the Slack bot
         slack_resource = slack_helloworld_api.root.add_resource("slack")
-        slack_resource.add_method("POST")
+
+        slack_wildcard_resource = slack_resource.add_resource("{proxy+}")
+        slack_wildcard_resource.add_method("POST")
