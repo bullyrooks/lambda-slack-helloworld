@@ -3,8 +3,7 @@ import os
 
 import aws_cdk as cdk
 
-from python_cdk_helloworld.python_cdk_helloworld_stack import PythonCdkHelloworldStack
-
+from slack_helloworld.slack_helloworld_stack import SlackHelloworldStack
 
 app = cdk.App()
 SlackHelloworldStack(app, "SlackHelloworldStack",
