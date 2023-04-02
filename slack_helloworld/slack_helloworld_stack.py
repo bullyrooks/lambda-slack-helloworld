@@ -14,11 +14,8 @@ class SlackHelloworldStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        self.build_lambda_func()
-
-    def build_lambda_func(self):
         image_tag = os.getenv("IMAGE_TAG", "latest")
-        self.ecr_image = _lambda.DockerImageCode.from_ecr(
+        ecr_image = _lambda.DockerImageCode.from_ecr(
             repository=Repository.from_repository_name(self, "slack-helloworld-repo", "slack-helloworld"),
             tag_or_digest=image_tag
         )
@@ -29,7 +26,7 @@ class SlackHelloworldStack(Stack):
             function_name="slack-helloworld",
             # Use aws_cdk.aws_lambda.DockerImageCode.from_image_asset to build
             # a docker image on deployment
-            code=self.ecr_image,
+            code=ecr_image,
         )
 
         slack_helloworld_api = apigateway.LambdaRestApi(self, "slack-helloworld-api",
