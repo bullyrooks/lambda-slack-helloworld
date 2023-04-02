@@ -41,14 +41,16 @@ def respond_to_slack_within_3_seconds(ack, respond, command):
     logger.info("inside hello command")
     ack("Hi!")
 
-    response = call_hello_world(api_key)
-    logger.info("got a response back: %s", response)
+    message, status_code = call_hello_world(api_key)
+    logger.info("got a response back: %s, %s", status_code, message)
 
     # Check the response and send a message to the channel
-    if response['status'] == 200:
-        response_text = response['body']['message']
+    # Check the response and send a message to the channel
+    if status_code == 200:
+        response_text = message
     else:
         response_text = "An error occurred while calling the other Lambda function."
+
 
     respond({
         "response_type": "in_channel",
@@ -62,7 +64,12 @@ def call_hello_world(api_key, ):
     }
     endpoint_url = 'https://08ejndnqjb.execute-api.us-west-2.amazonaws.com/prod'
     response = requests.get(endpoint_url, headers=headers)
-    return response
+    if response.status_code == 200:
+        response_json = response.json()
+        message = response_json["message"]
+        return message, response.status_code
+    else:
+        return None, response.status_code
 
 def handler(event, context):
     logger.info("handling inbound event: %s", event)
