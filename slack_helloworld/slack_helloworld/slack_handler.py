@@ -30,6 +30,19 @@ apikeyresponse = ssm.get_parameter(
 )
 api_key = apikeyresponse["Parameter"]["Value"]
 
+apikeyresponse = ssm.get_parameter(
+    Name='/prod/chatai/lambda.api.key',
+    WithDecryption=True
+)
+api_key = apikeyresponse["Parameter"]["Value"]
+
+helloworldurlresponse = ssm.get_parameter(
+    Name='/prod/chatai/helloworld.api.url',
+    WithDecryption=False
+)
+helloworld_url = helloworldurlresponse["Parameter"]["Value"]
+
+
 # process_before_response must be True when running on FaaS
 app = App(process_before_response=True,
           token=bot_token,
@@ -67,8 +80,8 @@ def call_hello_world(api_key, ):
         'x-api-key': api_key,
         'Content-Type': 'application/json',
     }
-    endpoint_url = 'https://08ejndnqjb.execute-api.us-west-2.amazonaws.com/prod'
-    response = requests.get(endpoint_url, headers=headers)
+
+    response = requests.get(helloworld_url, headers=headers)
     if response.status_code == 200:
         response_json = response.json()
         message = response_json["message"]
