@@ -34,10 +34,7 @@ class SlackHelloworldStack(Stack):
 
         ssm_policy_statement = iam.PolicyStatement(
             actions=["ssm:GetParameter"],
-            resources=["arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/lambda.api.key",
-                       "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.app.token",
-                       "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.bot.token",
-                       "arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/slack.signing.secret",
+            resources=["arn:aws:ssm:us-west-2:108452827623:parameter/prod/chatai/*",
                        ],
             effect=iam.Effect.ALLOW
         )
