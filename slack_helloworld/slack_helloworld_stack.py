@@ -69,12 +69,3 @@ class SlackHelloworldStack(Stack):
         # slack_wildcard_resource = slack_resource.add_resource("{proxy+}")
         slack_resource.add_method("POST")
 
-        # Create a deployment explicitly
-        deployment = apigateway.Deployment(self, "Deployment",
-                                      api=slack_helloworld_api)
-
-        # Map the deployment to the root URL
-        apigateway.Stage(self, "prod",
-                    deployment=deployment,
-                    stage_name="",
-                    rest_api=slack_helloworld_api)
