@@ -47,7 +47,8 @@ helloworld_url = helloworldurlresponse["Parameter"]["Value"]
 app = App(process_before_response=True,
           token=bot_token,
           logger=logger,
-          signing_secret=signing_secret)
+          signing_secret=signing_secret,
+          )
 
 @app.event("app_mention")
 def handle_app_mentions(body, say, logger):

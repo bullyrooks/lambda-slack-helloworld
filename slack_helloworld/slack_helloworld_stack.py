@@ -38,6 +38,9 @@ class SlackHelloworldStack(Stack):
             # Use aws_cdk.aws_lambda.DockerImageCode.from_image_asset to build
             # a docker image on deployment
             code=ecr_image,
+            environment={
+                "SLACK_REQUEST_TIMEOUT": "60"
+            }
         )
 
         ssm_policy_statement = iam.PolicyStatement(
