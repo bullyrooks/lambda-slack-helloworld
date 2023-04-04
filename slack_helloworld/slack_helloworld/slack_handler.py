@@ -51,6 +51,7 @@ app = App(process_before_response=True,
 
 @app.event("app_mention")
 def handle_app_mentions(body, say, logger):
+    logger.info("inside handle_app_mentions")
     logger.info(body)
     say("What's up?")
 
