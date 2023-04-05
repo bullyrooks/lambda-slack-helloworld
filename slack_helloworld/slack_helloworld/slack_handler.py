@@ -62,9 +62,9 @@ app = App(process_before_response=True,
 
 @app.event("app_mention")
 def handle_app_mentions(body, say, logger):
-    logger.info("inside handle_app_mentions")
-    logger.info(body)
-    say(call_chatai(body))
+    logger.info("inside handle_app_mentions: %s", body)
+    response = call_chatai(body)
+    say(response)
 
 @app.command("/hello")
 def respond_to_slack_within_3_seconds(ack, respond, command):
