@@ -114,7 +114,7 @@ def call_chatai(text):
     logger("chatai response: %s", response)
     if response.status_code == 200:
         response_json = response.json()
-        message = response_json["body"]
+        message = response_json["response"]
         return message, response.status_code
     else:
         return None, response.status_code
