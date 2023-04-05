@@ -106,12 +106,12 @@ def call_chatai(text):
         'x-api-key': chatai_api_key,
         'Content-Type': 'application/json',
     }
-    logger("chatai request: %s", text)
+    logger.info("chatai request: %s", text)
     response = requests.post(chatai_url,
                              json={"text": text},
                              headers=headers,
                              )
-    logger("chatai response: %s", response)
+    logger.info("chatai response: %s", response)
     if response.status_code == 200:
         response_json = response.json()
         message = response_json["response"]
