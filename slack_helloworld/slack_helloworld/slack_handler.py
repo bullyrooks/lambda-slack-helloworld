@@ -63,7 +63,7 @@ app = App(process_before_response=True,
 @app.event("app_mention")
 def handle_app_mentions(body, say, logger):
     logger.info("inside handle_app_mentions: %s", body)
-    response = call_chatai(body)
+    response, status_code = call_chatai(body)
     say(response)
 
 @app.command("/hello")
@@ -113,7 +113,7 @@ def call_chatai(text):
                              json={"text": message},
                              headers=headers,
                              )
-    logger.info("chatai response: %s", response)
+    logger.info("chatai response: %s", response.json())
     if response.status_code == 200:
         response_json = response.json()
         message = response_json["response"]
