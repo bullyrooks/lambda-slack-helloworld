@@ -47,7 +47,7 @@ chataiurlresponse = ssm.get_parameter(
 )
 chatai_url = chataiurlresponse["Parameter"]["Value"]
 chataiapikeyresponse = ssm.get_parameter(
-    Name='/prod/chatai/chatai.api.key',
+    Name='/prod/chatai/chatlambda.api.key',
     WithDecryption=True
 )
 chatai_api_key = chataiapikeyresponse["Parameter"]["Value"]
