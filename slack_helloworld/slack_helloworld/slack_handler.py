@@ -107,8 +107,10 @@ def call_chatai(text):
         'Content-Type': 'application/json',
     }
     logger.info("chatai request: %s", text)
+    message = text['event']['text']
+    logger.info("message: %s", message)
     response = requests.post(chatai_url,
-                             json={"text": text},
+                             json={"text": message},
                              headers=headers,
                              )
     logger.info("chatai response: %s", response)
